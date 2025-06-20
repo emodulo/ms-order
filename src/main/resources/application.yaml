@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ms-order
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: jdbc:postgresql://${HOST}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html
+    enabled: true
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
