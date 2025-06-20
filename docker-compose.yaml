@@ -1,0 +1,33 @@
+services:
+  ms-order:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ms-order
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    networks:
+      - eModulo-network
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15.1-alpine
+    container_name: db-order
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    networks:
+      - eModulo-network
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+networks:
+  eModulo-network:
+    driver: bridge
+volumes:
+  db-data:
+    driver: local
