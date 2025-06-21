@@ -13,9 +13,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Order {
     private final Long id;
-    private final CustomerData customer;
-    private final AddressData billingAddress;
-    private final AddressData shippingAddress;
+    private final Customer customer;
+    private final Address billingAddress;
+    private final Address shippingAddress;
     private final List<Item> items;
     private final BigDecimal total;
     private final LocalDateTime createdAt;

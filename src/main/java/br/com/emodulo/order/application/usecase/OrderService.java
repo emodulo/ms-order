@@ -20,9 +20,8 @@ public class OrderService implements OrderUseCasePort {
 
     @Override
     public Order create(Order order) {
-        // calcula total
         BigDecimal total = order.getItems().stream()
-                .map(i -> i.unitPrice().multiply(BigDecimal.valueOf(i.quantity())))
+                .map(i -> i.getUnitPrice().multiply(BigDecimal.valueOf(i.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         Order toSave = new Order(
@@ -37,9 +36,8 @@ public class OrderService implements OrderUseCasePort {
 
         Order saved = repository.save(toSave);
 
-        // baixa estoque
-        order.getItems().forEach(item ->
-                inventoryClient.decreaseStock(item.productId(), item.quantity()));
+        //order.getItems().forEach(item ->
+                //inventoryClient.decreaseStock(item.getProductId(), item.getQuantity()));
 
         return saved;
     }
@@ -55,4 +53,5 @@ public class OrderService implements OrderUseCasePort {
         return repository.findAll();
     }
 }
+
 

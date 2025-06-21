@@ -1,6 +1,5 @@
-package br.com.emodulo.order.domain.model;
+package br.com.emodulo.order.adapter.in.api.dto;
 
-import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item {
+public class OrderItemDTO {
     private String productId;
     private String name;
     private int quantity;

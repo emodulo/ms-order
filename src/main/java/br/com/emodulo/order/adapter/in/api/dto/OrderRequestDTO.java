@@ -1,15 +1,20 @@
 package br.com.emodulo.order.adapter.in.api.dto;
 
-import br.com.emodulo.order.domain.model.AddressData;
-import br.com.emodulo.order.domain.model.CustomerData;
-import br.com.emodulo.order.domain.model.Item;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-public record OrderRequestDTO(
-        CustomerData customer,
-        AddressData billingAddress,
-        AddressData shippingAddress,
-        List<Item> items,
-        boolean shippingAddressSameAsBilling
-) {}
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class OrderRequestDTO {
+    private CustomerDTO customer;
+    private AddressDTO billingAddress;
+    private AddressDTO shippingAddress;
+    private List<OrderItemDTO> items;
+    private boolean shippingAddressSameAsBilling;
+}

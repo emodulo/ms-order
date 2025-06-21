@@ -6,15 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item {
-    private String productId;
-    private String name;
-    private int quantity;
-    private BigDecimal unitPrice;
+public class Address {
+    private String street;
+    private String number;
+    private String city;
+    private String state;
+    private String zip;
 }
