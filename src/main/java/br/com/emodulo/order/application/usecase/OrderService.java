@@ -16,7 +16,6 @@ import java.util.List;
 public class OrderService implements OrderUseCasePort {
 
     private final OrderRepositoryPort repository;
-    private final InventoryClientPort inventoryClient;
 
     @Override
     public Order create(Order order) {
@@ -35,9 +34,6 @@ public class OrderService implements OrderUseCasePort {
         );
 
         Order saved = repository.save(toSave);
-
-        //order.getItems().forEach(item ->
-                //inventoryClient.decreaseStock(item.getProductId(), item.getQuantity()));
 
         return saved;
     }
