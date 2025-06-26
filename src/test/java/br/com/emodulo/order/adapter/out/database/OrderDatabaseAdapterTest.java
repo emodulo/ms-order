@@ -4,6 +4,7 @@ import br.com.emodulo.order.adapter.out.database.entity.OrderEntity;
 import br.com.emodulo.order.adapter.out.database.mapper.OrderEntityMapper;
 import br.com.emodulo.order.adapter.out.database.repository.OrderJpaRepository;
 import br.com.emodulo.order.domain.model.*;
+import br.com.emodulo.order.factory.OrderTestDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,13 +31,7 @@ public class OrderDatabaseAdapterTest {
 
     @Test
     void shouldSaveOrder() {
-        Order order = new Order(null,
-                new Customer("1", "Maria", "99999999900"),
-                new Address("Rua X", "10", "Cidade", "SP", "00000-000"),
-                new Address("Rua X", "10", "Cidade", "SP", "00000-000"),
-                List.of(new Item("1", "Produto", 2, new BigDecimal("50.00"))),
-                null,
-                null);
+        Order order = OrderTestDataFactory.buildOrderDomain();
 
         OrderEntity entity = orderMapper.toEntity(order);
         entity.setId(1L);
@@ -46,7 +41,7 @@ public class OrderDatabaseAdapterTest {
         Order saved = adapter.save(order);
 
         assertNotNull(saved.getId());
-        assertEquals("Maria", saved.getCustomer().getName());
+        assertEquals("Carlos", saved.getCustomer().getName());
     }
 
     @Test

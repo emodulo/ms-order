@@ -31,4 +31,12 @@ public class OrderDatabaseAdapter implements OrderRepositoryPort {
     public List<Order> findAll() {
         return repository.findAll().stream().map(mapper::toDomain).toList();
     }
+
+    @Override
+    public List<Order> findByExternalId(String externalId) {
+        return repository.findByExternalId(externalId)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
 }

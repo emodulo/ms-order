@@ -27,13 +27,17 @@ public class OrderEntity {
     @Column(name = "order_id")
     private Long id;
 
+    @Column(name = "external_id")
+    private String externalId;
+
     @Column(name = "customer_id")
     private String customerId;
     @Column(name = "customer_name")
     private String customerName;
     @Column(name = "customer_document")
     private String customerDocument;
-
+    @Column(name = "customer_email")
+    private String customerEmail;
     @Column(name = "billing_street")
     private String billingStreet;
     @Column(name = "billing_number")

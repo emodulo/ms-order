@@ -1,9 +1,10 @@
 CREATE TABLE tb_orders (
     order_id SERIAL PRIMARY KEY,
-
+    external_id VARCHAR(255) NOT NULL,
     customer_id VARCHAR(255) NOT NULL,
     customer_name VARCHAR(255) NOT NULL,
     customer_document VARCHAR(255) NOT NULL,
+    customer_email VARCHAR(255) NOT NULL,
 
     billing_street VARCHAR(255) NOT NULL,
     billing_number VARCHAR(50) NOT NULL,

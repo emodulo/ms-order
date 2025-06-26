@@ -5,6 +5,7 @@ import br.com.emodulo.order.domain.model.Address;
 import br.com.emodulo.order.domain.model.Customer;
 import br.com.emodulo.order.domain.model.Item;
 import br.com.emodulo.order.domain.model.Order;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -13,8 +14,14 @@ import java.util.List;
 
 @Component
 public class OrderDtoMapper {
-    public Order toDomain(OrderRequestDTO dto) {
-        Customer customer = new Customer(dto.getCustomer().getId(), dto.getCustomer().getName(), dto.getCustomer().getDocument());
+    public Order toDomain(OrderRequestDTO dto, Jwt jwt) {
+        Customer customer = new Customer(
+                dto.getCustomer().getId(),
+                jwt.getSubject(),
+                dto.getCustomer().getName(),
+                dto.getCustomer().getDocument(),
+                dto.getCustomer().getEmail()
+        );
         Address billing = new Address(
                 dto.getBillingAddress().getStreet(),
                 dto.getBillingAddress().getNumber(),
@@ -45,7 +52,14 @@ public class OrderDtoMapper {
     }
 
     public OrderResponseDTO toResponseDTO(Order order) {
-        CustomerDTO customer = new CustomerDTO(order.getCustomer().getId(), order.getCustomer().getName(), order.getCustomer().getDocument());
+        CustomerResponseDTO customer = new CustomerResponseDTO(
+                order.getCustomer().getId(),
+                order.getCustomer().getName(),
+                order.getCustomer().getDocument(),
+                order.getCustomer().getEmail(),
+                order.getCustomer().getExternalId()
+        );
+
         AddressDTO billing = new AddressDTO(
                 order.getBillingAddress().getStreet(),
                 order.getBillingAddress().getNumber(),

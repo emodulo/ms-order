@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderResponseDTO {
     private Long id;
-    private CustomerDTO customer;
+    private CustomerResponseDTO customer;
     private AddressDTO billingAddress;
     private AddressDTO shippingAddress;
     private List<OrderItemDTO> items;

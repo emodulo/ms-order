@@ -1,5 +1,7 @@
 package br.com.emodulo.order.application.usecase;
 import br.com.emodulo.order.domain.model.*;
+import br.com.emodulo.order.factory.OrderTestDataFactory;
+import br.com.emodulo.order.port.out.InventoryClientPort;
 import br.com.emodulo.order.port.out.OrderRepositoryPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +18,12 @@ public class OrderServiceTest {
 
     private OrderService service;
     private OrderRepositoryPort repository;
+    private InventoryClientPort inventory;
 
     @BeforeEach
     void setup() {
         repository = mock(OrderRepositoryPort.class);
-        service = new OrderService(repository);
+        service = new OrderService(repository, inventory);
     }
 
     @Test
@@ -29,13 +32,7 @@ public class OrderServiceTest {
                 new Item("1", "Produto A", 2, new BigDecimal("100.00")),
                 new Item("2", "Produto B", 1, new BigDecimal("50.00"))
         );
-        Order order = new Order(null,
-                new Customer("123", "João", "12345678900"),
-                new Address("Rua A", "123", "Cidade", "SP", "00000-000"),
-                new Address("Rua A", "123", "Cidade", "SP", "00000-000"),
-                items,
-                null,
-                null);
+        Order order = OrderTestDataFactory.buildOrderDomain();
 
         Order savedOrder = new Order(1L, order.getCustomer(), order.getBillingAddress(), order.getShippingAddress(),
                 items, new BigDecimal("250.00"), LocalDateTime.now());
@@ -51,20 +48,14 @@ public class OrderServiceTest {
 
     @Test
     void shouldFindOrderById() {
-        Order order = new Order(1L,
-                new Customer("123", "João", "12345678900"),
-                new Address("Rua A", "123", "Cidade", "SP", "00000-000"),
-                new Address("Rua A", "123", "Cidade", "SP", "00000-000"),
-                List.of(new Item("1", "Produto", 1, new BigDecimal("100.00"))),
-                new BigDecimal("100.00"),
-                LocalDateTime.now());
+        Order order = OrderTestDataFactory.buildOrderDomain();
 
         when(repository.findById(1L)).thenReturn(Optional.of(order));
 
-        Order result = service.getById(1L);
+        Optional<Order> result = service.getById(1L);
 
-        assertEquals(1L, result.getId());
-        assertEquals("João", result.getCustomer().getName());
+        assertEquals(1L, result.get().getId());
+        assertEquals("João", result.get().getCustomer().getName());
     }
 
     @Test
@@ -78,12 +69,7 @@ public class OrderServiceTest {
     @Test
     void shouldReturnAllOrders() {
         List<Order> orders = List.of(
-                new Order(1L, new Customer("123", "João", "12345678900"),
-                        new Address("Rua A", "123", "Cidade", "SP", "00000-000"),
-                        new Address("Rua A", "123", "Cidade", "SP", "00000-000"),
-                        List.of(new Item("1", "Produto", 1, new BigDecimal("100.00"))),
-                        new BigDecimal("100.00"),
-                        LocalDateTime.now())
+                OrderTestDataFactory.buildOrderDomain()
         );
 
         when(repository.findAll()).thenReturn(orders);

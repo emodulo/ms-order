@@ -15,8 +15,10 @@ public class OrderEntityMapper {
     public OrderEntity toEntity(Order order) {
         OrderEntity entity = new OrderEntity();
         entity.setCustomerId(order.getCustomer().getId());
+        entity.setExternalId(order.getCustomer().getExternalId());
         entity.setCustomerName(order.getCustomer().getName());
         entity.setCustomerDocument(order.getCustomer().getDocument());
+        entity.setCustomerEmail(order.getCustomer().getEmail());
 
         entity.setBillingStreet(order.getBillingAddress().getStreet());
         entity.setBillingNumber(order.getBillingAddress().getNumber());
@@ -48,9 +50,27 @@ public class OrderEntityMapper {
     }
 
     public Order toDomain(OrderEntity entity) {
-        Customer customer = new Customer(entity.getCustomerId(), entity.getCustomerName(), entity.getCustomerDocument());
-        Address billing = new Address(entity.getBillingStreet(), entity.getBillingNumber(), entity.getBillingCity(), entity.getBillingState(), entity.getBillingZip());
-        Address shipping = new Address(entity.getShippingStreet(), entity.getShippingNumber(), entity.getShippingCity(), entity.getShippingState(), entity.getShippingZip());
+        Customer customer = new Customer(
+                entity.getCustomerId(),
+                entity.getExternalId(),
+                entity.getCustomerName(),
+                entity.getCustomerDocument(),
+                entity.getCustomerEmail()
+        );
+        Address billing = new Address(
+                entity.getBillingStreet(),
+                entity.getBillingNumber(),
+                entity.getBillingCity(),
+                entity.getBillingState(),
+                entity.getBillingZip()
+        );
+        Address shipping = new Address(
+                entity.getShippingStreet(),
+                entity.getShippingNumber(),
+                entity.getShippingCity(),
+                entity.getShippingState(),
+                entity.getShippingZip()
+        );
 
         List<Item> items = entity.getItems().stream().map(i ->
                 new Item(i.getProductId(), i.getName(), i.getQuantity(), i.getUnitPrice())

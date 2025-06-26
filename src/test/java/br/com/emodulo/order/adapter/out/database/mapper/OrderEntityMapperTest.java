@@ -2,6 +2,7 @@ package br.com.emodulo.order.adapter.out.database.mapper;
 
 import br.com.emodulo.order.adapter.out.database.entity.*;
 import br.com.emodulo.order.domain.model.*;
+import br.com.emodulo.order.factory.OrderTestDataFactory;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -16,20 +17,14 @@ public class OrderEntityMapperTest {
 
     @Test
     void shouldMapDomainToEntity() {
-        Customer customer = new Customer("1", "Ana", "12345678900");
-        Address billing = new Address("Rua X", "1", "SP", "SP", "01000-000");
-        Address shipping = new Address("Rua Y", "2", "SP", "SP", "01001-000");
-        List<Item> items = List.of(new Item("v1", "Carro", 1, new BigDecimal("100000")));
-
-        Order order = new Order(1L, customer, billing, shipping, items, new BigDecimal("100000"), LocalDateTime.now());
-
+        Order order = OrderTestDataFactory.buildOrderDomain();
         OrderEntity entity = mapper.toEntity(order);
 
         assertNotNull(entity);
-        assertEquals("Ana", entity.getCustomerName());
+        assertEquals("Carlos", entity.getCustomerName());
         assertEquals("SP", entity.getShippingState());
         assertEquals(1, entity.getItems().size());
-        assertEquals("Carro", entity.getItems().get(0).getName());
+        assertEquals("Produto 1", entity.getItems().get(0).getName());
     }
 
     @Test

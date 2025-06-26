@@ -10,4 +10,4 @@ FROM eclipse-temurin:21-jdk
 
 COPY --from=build /app/target/*.jar application.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT ["java", "-jar", "application.jar", "--spring.profiles.active=dev"]

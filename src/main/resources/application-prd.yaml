@@ -29,7 +29,7 @@ inventory:
 springdoc:
   swagger-ui:
     path: /index.html
-    enabled: true
+    enabled: false
   api-docs:
-    enabled: true
+    enabled: false
     path: /v3/api-docs

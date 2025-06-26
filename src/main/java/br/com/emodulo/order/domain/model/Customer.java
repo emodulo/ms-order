@@ -12,6 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Customer {
     private String id;
+    private String externalId;
     private String name;
     private String document;
+    private String email;
 }
