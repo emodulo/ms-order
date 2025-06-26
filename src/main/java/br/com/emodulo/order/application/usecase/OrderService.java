@@ -1,5 +1,6 @@
 package br.com.emodulo.order.application.usecase;
 
+import br.com.emodulo.order.application.usecase.config.OrderProperties;
 import br.com.emodulo.order.domain.model.Item;
 import br.com.emodulo.order.domain.model.Order;
 import br.com.emodulo.order.port.in.OrderUseCasePort;
@@ -20,6 +21,7 @@ public class OrderService implements OrderUseCasePort {
 
     private final OrderRepositoryPort repository;
     private final InventoryClientPort inventory;
+    private final OrderProperties orderProperties;
 
     @Override
     @Transactional
@@ -39,11 +41,13 @@ public class OrderService implements OrderUseCasePort {
                 LocalDateTime.now()
         );
 
-        for (Item item : order.getItems()) {
-            try {
-                inventory.decreaseStock(item.getProductId(), item.getQuantity());
-            } catch (Exception e) {
-                throw new IllegalStateException("Falha ao dar baixa no estoque", e);
+        if (orderProperties.isDecreaseStockEnabled()) {
+            for (Item item : order.getItems()) {
+                try {
+                    inventory.decreaseStock(item.getProductId(), item.getQuantity());
+                } catch (Exception e) {
+                    throw new IllegalStateException("Falha ao dar baixa no estoque", e);
+                }
             }
         }
 

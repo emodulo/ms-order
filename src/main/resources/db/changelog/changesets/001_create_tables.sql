@@ -1,4 +1,6 @@
-CREATE TABLE tb_orders (
+CREATE SCHEMA IF NOT EXISTS ordering;
+
+CREATE TABLE ordering.tb_orders (
     order_id SERIAL PRIMARY KEY,
     external_id VARCHAR(255) NOT NULL,
     customer_id VARCHAR(255) NOT NULL,
@@ -22,9 +24,9 @@ CREATE TABLE tb_orders (
     created_at TIMESTAMP NOT NULL
 );
 
-CREATE TABLE tb_order_items (
+CREATE TABLE ordering.tb_order_items (
     order_item_id SERIAL PRIMARY KEY,
-    order_id INT NOT NULL REFERENCES tb_orders(order_id) ON DELETE CASCADE,
+    order_id INT NOT NULL REFERENCES ordering.tb_orders(order_id) ON DELETE CASCADE,
 
     product_id VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,

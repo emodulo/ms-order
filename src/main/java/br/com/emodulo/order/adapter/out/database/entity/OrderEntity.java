@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_orders")
+@Table(schema = "ordering", name = "tb_orders")
 @Getter
 @Setter
 @NoArgsConstructor

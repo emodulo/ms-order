@@ -1,4 +1,5 @@
 package br.com.emodulo.order.application.usecase;
+import br.com.emodulo.order.application.usecase.config.OrderProperties;
 import br.com.emodulo.order.domain.model.*;
 import br.com.emodulo.order.factory.OrderTestDataFactory;
 import br.com.emodulo.order.port.out.InventoryClientPort;
@@ -19,11 +20,14 @@ public class OrderServiceTest {
     private OrderService service;
     private OrderRepositoryPort repository;
     private InventoryClientPort inventory;
+    private OrderProperties orderProperties;
 
     @BeforeEach
     void setup() {
         repository = mock(OrderRepositoryPort.class);
-        service = new OrderService(repository, inventory);
+        inventory = mock(InventoryClientPort.class);
+        orderProperties = mock(OrderProperties.class);
+        service = new OrderService(repository, inventory,orderProperties);
     }
 
     @Test
@@ -78,5 +82,38 @@ public class OrderServiceTest {
 
         assertEquals(1, result.size());
         verify(repository, times(1)).findAll();
+    }
+
+    @Test
+    void shouldCallDecreaseStock_whenEnabled() {
+        Item item = new Item("p1", "Produto 1", 2, new BigDecimal("100.00"));
+        Customer customer = new Customer("1", "ABC", "João", "12345678900", "1@1.com.br");
+        Address address = new Address("Rua A", "10", "SP", "SP", "01000-000");
+        Order order = new Order(null, customer, address, address, List.of(item), new BigDecimal("200.00"), LocalDateTime.now());
+
+        when(repository.save(any())).thenReturn(order);
+        when(orderProperties.isDecreaseStockEnabled()).thenReturn(true);
+
+        Order result = service.create(order);
+
+        assertNotNull(result);
+        verify(inventory, times(1)).decreaseStock("p1", 2);
+    }
+
+    @Test
+    void shouldNotCallDecreaseStock_whenDisabled() {
+        Item item = new Item("p1", "Produto 1", 2, new BigDecimal("100.00"));
+        Customer customer = new Customer("1", "ABC", "João", "12345678900", "1@1.com.br");
+        Address address = new Address("Rua A", "10", "SP", "SP", "01000-000");
+        Order order = new Order(null, customer, address, address, List.of(item), new BigDecimal("200.00"), LocalDateTime.now());
+
+        when(repository.save(any())).thenReturn(order);
+        when(orderProperties.isDecreaseStockEnabled()).thenReturn(false);
+
+        Order result = service.create(order);
+
+
+        assertNotNull(result);
+        verify(inventory, never()).decreaseStock(any(), anyInt());
     }
 }

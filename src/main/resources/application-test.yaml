@@ -10,8 +10,16 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
+        default_schema: ordering
   h2:
     console:
       enabled: true
   liquibase:
     enabled: false
+
+inventory:
+  base-url: ${INVENTORY_BASE_URL}
+  sell-endpoint: ${INVENTORY_SELL_ENDPOINT}
+
+order:
+  decrease-stock-enabled: ${ORDER_DECREASE_STOCK_ENABLE}
