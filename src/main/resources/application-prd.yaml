@@ -10,6 +10,10 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     enabled: true
+    default-schema: ordering
+    liquibase-schema: ordering
+    database-change-log-lock-table: ordering_changelog_lock
+    database-change-log-table: ordering_changelog
   jpa:
     properties:
       hibernate.default_schema: ordering
