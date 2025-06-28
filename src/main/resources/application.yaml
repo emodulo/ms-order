@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: ${APP_NAME}
+  config:
+    import: optional:file:.env
+  datasource:
+    url: jdbc:postgresql://${HOST}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: true
+    default-schema: ordering
+    liquibase-schema: ordering
+    database-change-log-lock-table: ordering_changelog_lock
+    database-change-log-table: ordering_changelog
+  jpa:
+    properties:
+      hibernate.default_schema: ordering
+    hibernate:
+      ddl-auto: none
+  security:
+      oauth2:
+        resourceserver:
+          jwt:
+            issuer-uri: ${PROVIDER_ISSUER_URI}
+
+server:
+  port: ${APP_PORT}
+
+inventory:
+  base-url: ${INVENTORY_BASE_URL}
+  sell-endpoint: ${INVENTORY_SELL_ENDPOINT}
+
+order:
+  decrease-stock-enabled: ${ORDER_DECREASE_STOCK_ENABLE}
+
+springdoc:
+  swagger-ui:
+    path: /index.html
+    enabled: true
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
