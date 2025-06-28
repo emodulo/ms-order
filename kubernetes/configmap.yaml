@@ -5,7 +5,7 @@ metadata:
 data:
   APP_NAME: "ms-order"
   APP_PORT: "8080"
-  SPRING_PROFILES_ACTIVE: "dev"
+  SHOW_SWAGGER: "true"
   HOST: "postgres-service:5432"
   POSTGRES_DB: "eModulo"
   POSTGRES_USER: "postgres"
