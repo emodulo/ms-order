@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ms-order-config
+data:
+  APP_NAME: ms-order
+  APP_PORT: "8080"
+  SPRING_PROFILES_ACTIVE: dev
+  HOST: postgres:5432
+  POSTGRES_DB: eModulo
+  PROVIDER_ISSUER_URI: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_axA27LFM2
+  INVENTORY_BASE_URL: http://ms-vehicle:8082
+  INVENTORY_SELL_ENDPOINT: /api/v1/vehicles/{id}/sell
+  ORDER_DECREASE_STOCK_ENABLE: "true"
