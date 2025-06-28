@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ms-order
+    name: ${APP_NAME}
   config:
     import: optional:file:.env[.properties]
   datasource:
