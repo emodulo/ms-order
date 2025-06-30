@@ -24,6 +24,7 @@ services:
       - eModulo-network
     volumes:
       - db-data:/var/lib/postgresql/data
+      - ./docker-init-ordering.sql:/docker-entrypoint-initdb.d/docker-init-ordering.sql:ro
 
 networks:
   eModulo-network:
