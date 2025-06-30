@@ -1,23 +1,47 @@
-name: Build and Push Docker Image
+name: Build, Push and Deploy ms-order
 
 on:
   push:
     branches:
-      - develop
+      - main
+    paths:
+      - '**'
+      - '!README.md'
+
+env:
+  IMAGE_NAME: finthos/ms-order
+  DEPLOYMENT_NAME: ms-order-deployment
 
 jobs:
-  build-and-push:
+  build-push-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Login no Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build da imagem
-        run: docker build -t finthos/ms-order:latest .
+        run: docker build -t ${{ env.IMAGE_NAME }}:latest .
 
       - name: Push da imagem
-        run: docker push finthos/ms-order:latest
+        run: docker push ${{ env.IMAGE_NAME }}:latest
+
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Obter credenciais do EKS
+        run: |
+          aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME_PRD }} --region ${{ secrets.AWS_REGION }}
+
+      - name: Aplicar manifests do Kubernetes
+        run: kubectl apply -f kubernetes/
+
+      - name: Restart no Deployment
+        run: kubectl rollout restart deployment/${{ env.DEPLOYMENT_NAME }}
