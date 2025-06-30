@@ -1,4 +1,4 @@
-name: Build, Push and Deploy ms-order
+name: Deploy AWS
 
 on:
   push:
